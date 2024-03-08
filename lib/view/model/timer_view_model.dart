@@ -23,7 +23,7 @@ abstract class ITimerViewModel {
   String get counter;
 }
 
-class TimerCardViewModel extends ChangeNotifier implements ITimerViewModel {
+class TimerViewModel extends ChangeNotifier implements ITimerViewModel {
   TimerCardState _currentState = TimerCardState.running;
   Timer? _timer;
 
@@ -31,7 +31,7 @@ class TimerCardViewModel extends ChangeNotifier implements ITimerViewModel {
 
   String? _counter;
 
-  TimerCardViewModel(this.timerModel) {
+  TimerViewModel(this.timerModel) {
     if (timerModel.timerInSec == 0) {
       stopTimer();
       _timer?.cancel();
