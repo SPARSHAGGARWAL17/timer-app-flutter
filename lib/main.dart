@@ -21,8 +21,18 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
+        elevatedButtonTheme: const ElevatedButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: MaterialStatePropertyAll(Colors.black),
+            backgroundColor:
+                MaterialStatePropertyAll(AppColors.buttonBackgroundColor),
+            minimumSize: MaterialStatePropertyAll(
+              Size(double.infinity, 50),
+            ),
+          ),
+        ),
         buttonTheme: const ButtonThemeData(
-          buttonColor: Color(0xffE1DFFF),
+          buttonColor: AppColors.buttonBackgroundColor,
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.primaryColor,
