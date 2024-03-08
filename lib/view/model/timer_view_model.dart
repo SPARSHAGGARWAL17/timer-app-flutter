@@ -23,15 +23,21 @@ abstract class ITimerViewModel {
   String get counter;
 }
 
-class TimerViewModel extends ChangeNotifier implements ITimerViewModel {
+abstract class TimerViewDelegate {
+  void updateUI();
+}
+
+class TimerViewModel implements ITimerViewModel {
   TimerCardState _currentState = TimerCardState.running;
   Timer? _timer;
+
+  TimerViewDelegate? delegate;
 
   final TimerModel timerModel;
 
   String? _counter;
 
-  TimerViewModel(this.timerModel) {
+  TimerViewModel(this.timerModel, {this.delegate}) {
     if (timerModel.timerInSec == 0) {
       stopTimer();
       _timer?.cancel();
@@ -73,7 +79,7 @@ class TimerViewModel extends ChangeNotifier implements ITimerViewModel {
       case TimerCardState.completed:
         break;
     }
-    notifyListeners();
+    delegate?.updateUI();
   }
 
   @override
@@ -98,7 +104,7 @@ class TimerViewModel extends ChangeNotifier implements ITimerViewModel {
 
   void _updateCounterValue(int timerTick) {
     _counter = _convertTimeToString(timerModel.timerInSec - timerTick);
-    notifyListeners();
+    delegate?.updateUI();
   }
 
   String _convertTimeToString(int timeInSec) {
