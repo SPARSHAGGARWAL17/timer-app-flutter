@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timer_app/navigator/routes.dart';
+import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/home_page.dart';
 
 void main() {
@@ -24,22 +25,22 @@ class MyApp extends StatelessWidget {
           buttonColor: Color(0xffE1DFFF),
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xff006782),
+          backgroundColor: AppColors.primaryColor,
           centerTitle: false,
           elevation: 5,
           shadowColor: Colors.grey,
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
-            fontSize: 20,
+            fontSize: 32,
           ),
           foregroundColor: Colors.white,
           toolbarHeight: 120,
           // backgroundColor: Color(0xff216C2E),
         ),
-        cardColor: const Color(0xff0067820D),
+        cardColor: AppColors.cardColor,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xff006782),
+          seedColor: AppColors.primaryColor,
         ),
         useMaterial3: true,
       ),
