@@ -3,34 +3,63 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timer_app/model/timer_model.dart';
 
-class TimerCardViewModel extends ChangeNotifier {
+enum TimerCardState {
+  running,
+  paused,
+  completed,
+}
+
+abstract class ITimerViewModel {
+  TimerCardState get currentState;
+
+  void changeTimerState(TimerCardState currentState);
+
+  void playTimer();
+
+  void pauseTimer();
+
+  void stopTimer();
+
+  String get counter;
+}
+
+class TimerCardViewModel extends ChangeNotifier implements ITimerViewModel {
   TimerCardState _currentState = TimerCardState.running;
   Timer? _timer;
 
   final TimerModel timerModel;
 
-  final ValueNotifier<String> _counter = ValueNotifier("00:00:00");
+  String? _counter;
 
   TimerCardViewModel(this.timerModel) {
     if (timerModel.timerInSec == 0) {
-      markTimerAsCompleted();
+      stopTimer();
       _timer?.cancel();
     } else {
       _timer = Timer.periodic(const Duration(seconds: 1), _timerCallback);
     }
   }
 
-  ValueNotifier<String> get counter => _counter;
+  @override
+  String get counter {
+    if (_counter == null) {
+      return _convertTimeToString(timerModel.timerInSec);
+    } else {
+      return _counter!;
+    }
+  }
 
+  @override
   TimerCardState get currentState => _currentState;
 
   void _timerCallback(Timer timer) {
     _updateCounterValue(timer.tick);
     if (timerModel.timerInSec == timer.tick) {
-      markTimerAsCompleted();
+      stopTimer();
     }
   }
 
+  @override
   void changeTimerState(TimerCardState currentState) {
     switch (currentState) {
       case TimerCardState.running:
@@ -47,16 +76,19 @@ class TimerCardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   void playTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), _timerCallback);
   }
 
+  @override
   void pauseTimer() {
     int timerTick = _timer?.tick ?? 0;
     timerModel.timerInSec -= timerTick;
     _timer?.cancel();
   }
 
+  @override
   void stopTimer() {
     _timer?.cancel();
     timerModel.timerInSec = 0;
@@ -65,13 +97,8 @@ class TimerCardViewModel extends ChangeNotifier {
   }
 
   void _updateCounterValue(int timerTick) {
-    _counter.value = _convertTimeToString(timerModel.timerInSec - timerTick);
-  }
-
-  void markTimerAsCompleted() {
-    _timer?.cancel();
-    _currentState = TimerCardState.completed;
-    timerModel.timerInSec = 0;
+    _counter = _convertTimeToString(timerModel.timerInSec - timerTick);
+    notifyListeners();
   }
 
   String _convertTimeToString(int timeInSec) {
@@ -83,10 +110,4 @@ class TimerCardViewModel extends ChangeNotifier {
     String secString = sec.toString().padLeft(2, "0");
     return "$hourString:$minString:$secString";
   }
-}
-
-enum TimerCardState {
-  running,
-  paused,
-  completed,
 }
