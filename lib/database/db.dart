@@ -19,6 +19,7 @@ class TimerDatabase implements IDatabase {
 
   factory TimerDatabase() => _internal;
 
+  @override
   Future<void> init() async {
     _db = await openDatabase(
       "timer_app.db",
@@ -48,10 +49,7 @@ class TimerDatabase implements IDatabase {
 
   @override
   Future<void> updateData(Map<String, dynamic> data) async {
-    print(data);
-    var result = await _db
-        .update("Timer", data, where: "id = ?", whereArgs: [data['id']]);
-    print(result);
+    _db.update("Timer", data, where: "id = ?", whereArgs: [data['id']]);
   }
 
   @override
