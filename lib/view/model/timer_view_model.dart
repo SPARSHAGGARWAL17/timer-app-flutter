@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timer_app/model/timer_model.dart';
 
-enum TimerCardState {
+enum TimerViewState {
   running,
   paused,
   completed,
 }
 
 abstract class ITimerViewModel {
-  TimerCardState get currentState;
+  TimerViewState get currentState;
 
-  void changeTimerState(TimerCardState currentState);
+  void changeTimerState(TimerViewState currentState);
 
   void playTimer();
 
@@ -28,7 +28,7 @@ abstract class TimerViewDelegate {
 }
 
 class TimerViewModel implements ITimerViewModel {
-  TimerCardState _currentState = TimerCardState.running;
+  TimerViewState _currentState = TimerViewState.running;
   Timer? _timer;
 
   TimerViewDelegate? delegate;
@@ -38,7 +38,7 @@ class TimerViewModel implements ITimerViewModel {
   String? _counter;
 
   TimerViewModel(this.timerModel, {this.delegate}) {
-    if (timerModel.timerInSec == 0) {
+        if (timerModel.timerInSec == 0) {
       stopTimer();
       _timer?.cancel();
     } else {
@@ -56,7 +56,7 @@ class TimerViewModel implements ITimerViewModel {
   }
 
   @override
-  TimerCardState get currentState => _currentState;
+  TimerViewState get currentState => _currentState;
 
   void _timerCallback(Timer timer) {
     _updateCounterValue(timer.tick);
@@ -66,17 +66,17 @@ class TimerViewModel implements ITimerViewModel {
   }
 
   @override
-  void changeTimerState(TimerCardState currentState) {
+  void changeTimerState(TimerViewState currentState) {
     switch (currentState) {
-      case TimerCardState.running:
+      case TimerViewState.running:
         pauseTimer();
-        _currentState = TimerCardState.paused;
+        _currentState = TimerViewState.paused;
         break;
-      case TimerCardState.paused:
-        _currentState = TimerCardState.running;
+      case TimerViewState.paused:
+        _currentState = TimerViewState.running;
         playTimer();
         break;
-      case TimerCardState.completed:
+      case TimerViewState.completed:
         break;
     }
     delegate?.updateUI();
@@ -99,7 +99,7 @@ class TimerViewModel implements ITimerViewModel {
     _timer?.cancel();
     timerModel.timerInSec = 0;
     _updateCounterValue(0);
-    _currentState = TimerCardState.completed;
+    _currentState = TimerViewState.completed;
   }
 
   void _updateCounterValue(int timerTick) {

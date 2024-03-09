@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/model/timer_view_model.dart';
 import 'package:timer_app/view/widgets/action_button.dart';
@@ -37,7 +38,7 @@ class _TimerWidgetState extends State<TimerWidget>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (viewModel.currentState != TimerCardState.completed)
+                if (viewModel.currentState != TimerViewState.completed)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -47,16 +48,17 @@ class _TimerWidgetState extends State<TimerWidget>
                       ),
                       hSpacing(10),
                       ActionButton(
-                        initialState: viewModel.currentState == TimerCardState.running
-                            ? ButtonState.pause
-                            : ButtonState.play,
+                        initialState:
+                            viewModel.currentState == TimerViewState.running
+                                ? ButtonState.pause
+                                : ButtonState.play,
                         onTap: (currentState) {
                           if (currentState == ButtonState.pause) {
                             widget.viewModel
-                                .changeTimerState(TimerCardState.running);
+                                .changeTimerState(TimerViewState.running);
                           } else {
                             widget.viewModel
-                                .changeTimerState(TimerCardState.paused);
+                                .changeTimerState(TimerViewState.paused);
                           }
                         },
                       ),
@@ -69,7 +71,7 @@ class _TimerWidgetState extends State<TimerWidget>
                       ),
                     ],
                   ),
-                if (viewModel.currentState == TimerCardState.completed)
+                if (viewModel.currentState == TimerViewState.completed)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -102,7 +104,7 @@ class _TimerWidgetState extends State<TimerWidget>
               ],
             ),
           ),
-          if (viewModel.currentState == TimerCardState.completed)
+          if (viewModel.currentState == TimerViewState.completed)
             ElevatedButton(
               onPressed: () {},
               child: const Text("Mark complete"),

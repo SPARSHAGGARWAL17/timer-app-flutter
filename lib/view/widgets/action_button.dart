@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-class ActionButton extends StatefulWidget {
+class ActionButton extends StatelessWidget {
   final ButtonState initialState;
-  const ActionButton({super.key, required this.initialState});
+  final void Function(ButtonState currentState) onTap;
+  const ActionButton(
+      {super.key, required this.initialState, required this.onTap});
 
-  @override
-  State<ActionButton> createState() => _ActionButtonState();
-}
-
-class _ActionButtonState extends State<ActionButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        onTap(initialState);
+      },
       child: Container(
         height: 24,
         width: 24,
@@ -22,7 +21,7 @@ class _ActionButtonState extends State<ActionButton> {
         ),
         alignment: Alignment.center,
         child: Icon(
-          getIconBasedOnState(widget.initialState),
+          getIconBasedOnState(initialState),
           color: Colors.white,
           size: 20,
         ),
