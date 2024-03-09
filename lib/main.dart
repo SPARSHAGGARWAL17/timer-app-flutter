@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timer_app/controller/timers_controller.dart';
+import 'package:timer_app/database/db.dart';
 import 'package:timer_app/navigator/routes.dart';
 import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/home_page.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var timerDb = TimerDatabase();
+  await timerDb.init();
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TimerController(
+        database: timerDb,
+      ),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,11 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Timer App',
       theme: ThemeData(
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color(0xffB6EAFF),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
         ),
         elevatedButtonTheme: const ElevatedButtonThemeData(
           style: ButtonStyle(
