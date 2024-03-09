@@ -40,12 +40,11 @@ class TimerViewModel implements ITimerViewModel {
 
   final TimerModel timerModel;
 
-  String? _counter;
+  String _counter = '';
 
   TimerViewModel(this.timerModel, {this.delegate, this.audioPlayer}) {
     if (timerModel.timeInSec == 0) {
       stopTimer();
-      _timer?.cancel();
     } else {
       _timer = Timer.periodic(const Duration(seconds: 1), _timerCallback);
     }
@@ -53,10 +52,10 @@ class TimerViewModel implements ITimerViewModel {
 
   @override
   String get counter {
-    if (_counter == null) {
+    if (_counter.isEmpty) {
       return _convertTimeToString(timerModel.timeInSec);
     } else {
-      return _counter!;
+      return _counter;
     }
   }
 
@@ -90,6 +89,7 @@ class TimerViewModel implements ITimerViewModel {
 
   @override
   void playTimer() {
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), _timerCallback);
     delegate?.saveTimerData();
   }
