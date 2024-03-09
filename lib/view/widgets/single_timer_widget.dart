@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/model/timer_view_model.dart';
 import 'package:timer_app/view/widgets/action_button.dart';
