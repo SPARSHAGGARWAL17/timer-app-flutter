@@ -27,8 +27,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.detached:
-        Provider.of<TimerController>(context, listen: false)
-            .saveCurrentTimerState();
+        var timerController =
+            Provider.of<TimerController>(context, listen: false);
+        timerController.saveCurrentTimerState();
+        timerController.dispose();
+
         break;
       default:
     }

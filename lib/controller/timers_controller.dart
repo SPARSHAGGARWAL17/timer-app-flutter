@@ -44,4 +44,12 @@ class TimerController extends ChangeNotifier {
       database.updateData(currentState.toMap(true));
     }
   }
+
+  @override
+  void dispose() {
+    for (var element in activeTimers) {
+      element.stopTimer();
+    }
+    super.dispose();
+  }
 }
