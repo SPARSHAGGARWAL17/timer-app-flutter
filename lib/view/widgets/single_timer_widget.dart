@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_app/controller/timers_controller.dart';
 import 'package:timer_app/theme.dart';
+import 'package:timer_app/view/audio_player.dart';
 import 'package:timer_app/view/model/timer_view_model.dart';
 import 'package:timer_app/view/widgets/action_button.dart';
 import 'package:timer_app/view/widgets/spacing.dart';
@@ -27,6 +28,7 @@ class _TimerWidgetState extends State<TimerWidget>
     super.initState();
     viewModel = widget.viewModel;
     viewModel.delegate = this;
+    viewModel.audioPlayer = AppAudioPlayer();
   }
 
   @override

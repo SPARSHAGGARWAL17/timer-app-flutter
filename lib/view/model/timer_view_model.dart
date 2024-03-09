@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:timer_app/model/timer_model.dart';
+import 'package:timer_app/view/audio_player.dart';
 
 enum TimerViewState {
   running,
@@ -35,11 +37,13 @@ class TimerViewModel implements ITimerViewModel {
 
   TimerViewDelegate? delegate;
 
+  IAudioPlayer? audioPlayer;
+
   final TimerModel timerModel;
 
   String? _counter;
 
-  TimerViewModel(this.timerModel, {this.delegate}) {
+  TimerViewModel(this.timerModel, {this.delegate, this.audioPlayer}) {
     if (timerModel.timeInSec == 0) {
       stopTimer();
       _timer?.cancel();
@@ -63,6 +67,7 @@ class TimerViewModel implements ITimerViewModel {
   void _timerCallback(Timer timer) {
     _updateCounterValue(timer.tick);
     if (timerModel.timeInSec == timer.tick) {
+      audioPlayer?.play();
       stopTimer();
     }
   }
