@@ -8,7 +8,7 @@ import 'package:timer_app/view/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var timerDb = TimerDatabase();
+  var timerDb = TimerDatabase.instance();
   await timerDb.init();
   runApp(
     ChangeNotifierProvider(
@@ -30,7 +30,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
-    TimerDatabase().closeDatabase();
+    TimerDatabase.instance().closeDatabase();
     super.dispose();
   }
 
