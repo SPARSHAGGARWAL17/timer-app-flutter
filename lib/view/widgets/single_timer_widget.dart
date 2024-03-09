@@ -110,6 +110,7 @@ class _TimerWidgetState extends State<TimerWidget>
           if (viewModel.currentState == TimerViewState.completed)
             ElevatedButton(
               onPressed: () {
+                viewModel.audioPlayer?.stop();
                 removeTimer();
               },
               child: const Text("Mark complete"),
