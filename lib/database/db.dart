@@ -1,39 +1,66 @@
 import 'package:sqflite/sqflite.dart';
 
 abstract class IDatabase {
-  Future<void> createTable();
+  Future<void> init();
+  Future<void> createTable(Database db);
+  Future<int> insertData(Map<String, dynamic> data);
+  Future<List<Map>> getData();
+  Future<void> updateData(Map<String, dynamic> data);
+  Future<void> deleteData(int id);
+  Future<void> closeDatabase();
 }
 
-class TimerDatabase {
+class TimerDatabase implements IDatabase {
   late Database _db;
 
-  void init() async {
+  static final TimerDatabase _internal = TimerDatabase._();
+
+  TimerDatabase._();
+
+  factory TimerDatabase() => _internal;
+
+  Future<void> init() async {
     _db = await openDatabase(
       "timer_app.db",
+      version: 1,
       onCreate: (db, version) {
         createTable(db);
       },
     );
   }
 
-  void createTable(Database db) {
-    db.execute(
+  @override
+  Future<void> createTable(Database db) async {
+    await db.execute(
         "CREATE TABLE Timer (id INTEGER PRIMARY KEY, title TEXT, description TEXT, time_in_sec INTEGER)");
   }
 
-  void insertTimer(Map<String, dynamic> data) async {
-    _db.insert("Timer", data);
+  @override
+  Future<int> insertData(Map<String, dynamic> data) async {
+    return await _db.insert("Timer", data);
   }
 
-  void updateTimer(Map<String, dynamic> data) async {
-    _db.update("Timer", data);
+  @override
+  Future<List<Map>> getData() async {
+    var data = await _db.rawQuery("SELECT * FROM Timer");
+    return data;
   }
 
-  void deleteTimer(int id) {
-    _db.delete("Timer", where: "id = ?", whereArgs: [id]);
+  @override
+  Future<void> updateData(Map<String, dynamic> data) async {
+    print(data);
+    var result = await _db
+        .update("Timer", data, where: "id = ?", whereArgs: [data['id']]);
+    print(result);
   }
 
-  void closeDatabase() {
-    _db.close();
+  @override
+  Future<void> deleteData(int id) async {
+    await _db.delete("Timer", where: "id = ?", whereArgs: [id]);
+  }
+
+  @override
+  Future<void> closeDatabase() async {
+    await _db.close();
   }
 }
