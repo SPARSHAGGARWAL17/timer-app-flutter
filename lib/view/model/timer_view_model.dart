@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:timer_app/model/timer_model.dart';
 import 'package:timer_app/view/audio_player.dart';
 

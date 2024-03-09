@@ -98,9 +98,6 @@ class _AddTimerSheetState extends State<AddTimerSheet> {
                         hourTextController.text = "00";
                       }
                     },
-                    onEditingComplete: () {
-                      print("Editing compelete");
-                    },
                     onTapOutside: (event) {
                       if (hourTextController.text.isEmpty) {
                         hourTextController.text = "00";
