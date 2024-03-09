@@ -34,7 +34,7 @@ class TimerController extends ChangeNotifier {
     database.deleteData(id);
   }
 
-  void updateTimer(TimerModel timerModel) {
+  void saveTimerData(TimerModel timerModel) {
     database.updateData(timerModel.toMap(true));
   }
 

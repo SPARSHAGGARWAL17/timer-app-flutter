@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:timer_app/database/db.dart';
 import 'package:timer_app/model/timer_model.dart';
 
 enum TimerViewState {

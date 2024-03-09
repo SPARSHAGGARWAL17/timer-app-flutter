@@ -132,6 +132,6 @@ class _TimerWidgetState extends State<TimerWidget>
   @override
   void saveTimerData() {
     Provider.of<TimerController>(context, listen: false)
-        .updateTimer(viewModel.timerModel);
+        .saveTimerData(viewModel.timerModel);
   }
 }
