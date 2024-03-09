@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:timer_app/model/timer_model.dart';
 
 enum TimerViewState {
@@ -17,6 +18,8 @@ abstract class ITimerViewModel {
   void pauseTimer();
 
   void stopTimer();
+
+  TimerModel onDispose();
 
   String get counter;
 }
@@ -95,6 +98,7 @@ class TimerViewModel implements ITimerViewModel {
     delegate?.saveTimerData();
   }
 
+  @override
   TimerModel onDispose() {
     var timer = TimerModel(
       id: timerModel.id,
