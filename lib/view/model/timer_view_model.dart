@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:timer_app/model/timer_model.dart';
 
 enum TimerViewState {
@@ -38,7 +36,7 @@ class TimerViewModel implements ITimerViewModel {
   String? _counter;
 
   TimerViewModel(this.timerModel, {this.delegate}) {
-        if (timerModel.timerInSec == 0) {
+    if (timerModel.timeInSec == 0) {
       stopTimer();
       _timer?.cancel();
     } else {
@@ -49,7 +47,7 @@ class TimerViewModel implements ITimerViewModel {
   @override
   String get counter {
     if (_counter == null) {
-      return _convertTimeToString(timerModel.timerInSec);
+      return _convertTimeToString(timerModel.timeInSec);
     } else {
       return _counter!;
     }
@@ -60,7 +58,7 @@ class TimerViewModel implements ITimerViewModel {
 
   void _timerCallback(Timer timer) {
     _updateCounterValue(timer.tick);
-    if (timerModel.timerInSec == timer.tick) {
+    if (timerModel.timeInSec == timer.tick) {
       stopTimer();
     }
   }
@@ -90,20 +88,31 @@ class TimerViewModel implements ITimerViewModel {
   @override
   void pauseTimer() {
     int timerTick = _timer?.tick ?? 0;
-    timerModel.timerInSec -= timerTick;
+    timerModel.timeInSec -= timerTick;
     _timer?.cancel();
+  }
+
+  TimerModel onDispose() {
+    var timer = TimerModel(
+      id: timerModel.id,
+      title: timerModel.title,
+      description: timerModel.description,
+      timeInSec: timerModel.timeInSec - (_timer?.tick ?? 0),
+    );
+    stopTimer();
+    return timer;
   }
 
   @override
   void stopTimer() {
     _timer?.cancel();
-    timerModel.timerInSec = 0;
-    _updateCounterValue(0);
+    timerModel.timeInSec = 0;
     _currentState = TimerViewState.completed;
+    delegate?.updateUI();
   }
 
   void _updateCounterValue(int timerTick) {
-    _counter = _convertTimeToString(timerModel.timerInSec - timerTick);
+    _counter = _convertTimeToString(timerModel.timeInSec - timerTick);
     delegate?.updateUI();
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:timer_app/controller/timers_controller.dart';
 import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/model/timer_view_model.dart';
 import 'package:timer_app/view/widgets/action_button.dart';
@@ -105,7 +107,9 @@ class _TimerWidgetState extends State<TimerWidget>
           ),
           if (viewModel.currentState == TimerViewState.completed)
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                removeTimer();
+              },
               child: const Text("Mark complete"),
             )
         ],
@@ -115,6 +119,13 @@ class _TimerWidgetState extends State<TimerWidget>
 
   @override
   void updateUI() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void removeTimer() {
+    Provider.of<TimerController>(context, listen: false)
+        .removeTimer(viewModel.timerModel.id);
   }
 }

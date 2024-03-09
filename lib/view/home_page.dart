@@ -25,19 +25,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-      print(state);
     switch (state) {
       case AppLifecycleState.detached:
-        Provider.of<TimerController>(context, listen: false).saveCurrentTimerState();
+        Provider.of<TimerController>(context, listen: false)
+            .saveCurrentTimerState();
         break;
       default:
     }
     super.didChangeAppLifecycleState(state);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -47,9 +42,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         title: const Text("Potato Timer"),
       ),
       floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
         onPressed: () {
           showModalBottomSheet(
             isScrollControlled: true,

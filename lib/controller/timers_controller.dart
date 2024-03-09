@@ -35,9 +35,9 @@ class TimerController extends ChangeNotifier {
   }
 
   void saveCurrentTimerState() {
-    for (var i in activeTimers) {
-      var currentState = i.onDispose();
-      database.updateData(currentState.toMap(true));
-    }
+      for (var i in activeTimers) {
+        var currentState = i.onDispose();
+        database.updateData(currentState.toMap(true));
+      }
   }
 }
