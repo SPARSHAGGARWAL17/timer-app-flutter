@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:timer_app/controller/timers_controller.dart';
+import 'package:timer_app/model/timer_model.dart';
 import 'package:timer_app/theme.dart';
 import 'package:timer_app/view/widgets/spacing.dart';
 
@@ -11,9 +13,13 @@ class AddTimerSheet extends StatefulWidget {
 }
 
 class _AddTimerSheetState extends State<AddTimerSheet> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
   TextEditingController hourTextController = TextEditingController(text: "00");
   TextEditingController minTextController = TextEditingController(text: "00");
   TextEditingController secTextController = TextEditingController(text: "00");
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,6 +42,7 @@ class _AddTimerSheetState extends State<AddTimerSheet> {
             ),
             vSpacing(15),
             TextFormField(
+              controller: titleController,
               decoration: InputDecoration(
                 labelText: "Title",
                 focusedBorder: OutlineInputBorder(
@@ -50,6 +57,7 @@ class _AddTimerSheetState extends State<AddTimerSheet> {
             ),
             vSpacing(10),
             TextFormField(
+              controller: descriptionController,
               maxLines: 5,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
@@ -178,13 +186,32 @@ class _AddTimerSheetState extends State<AddTimerSheet> {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                var time = getTimeInSec;
+                if (time != 0) {
+                  var model = TimerModel(
+                    title: titleController.text,
+                    description: descriptionController.text,
+                    timeInSec: time,
+                  );
+                  Provider.of<TimerController>(context, listen: false)
+                      .addTimer(model);
+                }
+                Navigator.of(context).pop();
+              },
               child: const Text("Add Task"),
             )
           ],
         ),
       ),
     );
+  }
+
+  int get getTimeInSec {
+    var sec = int.tryParse(secTextController.text) ?? 0;
+    var min = int.tryParse(minTextController.text) ?? 0;
+    var hour = int.tryParse(hourTextController.text) ?? 0;
+    return (hour * 3600) + (min * 60) + sec;
   }
 
   InputDecoration textFieldDecoration(String counterText) {
