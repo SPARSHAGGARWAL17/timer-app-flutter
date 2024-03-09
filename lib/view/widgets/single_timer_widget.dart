@@ -42,58 +42,9 @@ class _TimerWidgetState extends State<TimerWidget>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (viewModel.currentState != TimerViewState.completed)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        viewModel.counter,
-                        style: AppTextStyles.headingStyle,
-                      ),
-                      hSpacing(10),
-                      ActionButton(
-                        initialState:
-                            viewModel.currentState == TimerViewState.running
-                                ? ButtonState.pause
-                                : ButtonState.play,
-                        onTap: (currentState) {
-                          if (currentState == ButtonState.pause) {
-                            widget.viewModel
-                                .changeTimerState(TimerViewState.running);
-                          } else {
-                            widget.viewModel
-                                .changeTimerState(TimerViewState.paused);
-                          }
-                        },
-                      ),
-                      hSpacing(10),
-                      ActionButton(
-                        initialState: ButtonState.stop,
-                        onTap: (currentState) {
-                          widget.viewModel.stopTimer();
-                        },
-                      ),
-                    ],
-                  ),
+                  buildRunningStateRow(),
                 if (viewModel.currentState == TimerViewState.completed)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.graphic_eq_rounded,
-                        color: AppColors.secondaryColor,
-                      ),
-                      hSpacing(20),
-                      const Text(
-                        "FINISHED",
-                        style: AppTextStyles.headingStyle,
-                      ),
-                      hSpacing(20),
-                      const Icon(
-                        Icons.graphic_eq_rounded,
-                        color: AppColors.secondaryColor,
-                      )
-                    ],
-                  ),
+                  buildFinishedRow(),
                 vSpacing(10),
                 Text(
                   viewModel.timerModel.title,
@@ -120,6 +71,60 @@ class _TimerWidgetState extends State<TimerWidget>
     );
   }
 
+  Row buildRunningStateRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          viewModel.counter,
+          style: AppTextStyles.headingStyle,
+        ),
+        hSpacing(10),
+        ActionButton(
+          initialState: viewModel.currentState == TimerViewState.running
+              ? ButtonState.pause
+              : ButtonState.play,
+          onTap: (currentState) {
+            if (currentState == ButtonState.pause) {
+              widget.viewModel.changeTimerState(TimerViewState.running);
+            } else {
+              widget.viewModel.changeTimerState(TimerViewState.paused);
+            }
+          },
+        ),
+        hSpacing(10),
+        ActionButton(
+          initialState: ButtonState.stop,
+          onTap: (currentState) {
+            widget.viewModel.stopTimer();
+          },
+        ),
+      ],
+    );
+  }
+
+  Row buildFinishedRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.graphic_eq_rounded,
+          color: AppColors.secondaryColor,
+        ),
+        hSpacing(20),
+        const Text(
+          "FINISHED",
+          style: AppTextStyles.headingStyle,
+        ),
+        hSpacing(20),
+        const Icon(
+          Icons.graphic_eq_rounded,
+          color: AppColors.secondaryColor,
+        )
+      ],
+    );
+  }
+
   @override
   void updateUI() {
     if (mounted) {
@@ -128,13 +133,11 @@ class _TimerWidgetState extends State<TimerWidget>
   }
 
   void removeTimer() {
-    Provider.of<TimerController>(context, listen: false)
-        .removeTimer(viewModel.timerModel.id);
+    context.read<TimerController>().removeTimer(viewModel.timerModel.id);
   }
 
   @override
   void saveTimerData() {
-    Provider.of<TimerController>(context, listen: false)
-        .saveTimerData(viewModel.timerModel);
+    context.read<TimerController>().saveTimerData(viewModel.timerModel);
   }
 }
