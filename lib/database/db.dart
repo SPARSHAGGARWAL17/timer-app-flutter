@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 
 abstract class IDatabase {
@@ -17,7 +19,7 @@ class TimerDatabase implements IDatabase {
 
   TimerDatabase._();
 
-  factory TimerDatabase() => _internal;
+  factory TimerDatabase.instance() => _internal;
 
   @override
   Future<void> init() async {
@@ -38,13 +40,21 @@ class TimerDatabase implements IDatabase {
 
   @override
   Future<int> insertData(Map<String, dynamic> data) async {
-    return await _db.insert("Timer", data);
+    try {
+      return await _db.insert("Timer", data);
+    } catch (e) {
+      return -1;
+    }
   }
 
   @override
   Future<List<Map>> getData() async {
-    var data = await _db.rawQuery("SELECT * FROM Timer");
-    return data;
+    try {
+      var data = await _db.rawQuery("SELECT * FROM Timer");
+      return data;
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
@@ -54,7 +64,11 @@ class TimerDatabase implements IDatabase {
 
   @override
   Future<void> deleteData(int id) async {
-    await _db.delete("Timer", where: "id = ?", whereArgs: [id]);
+    try {
+      await _db.delete("Timer", where: "id = ?", whereArgs: [id]);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override
