@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:timer_app/database/db.dart';
 import 'package:timer_app/model/timer_model.dart';
 
 enum TimerViewState {
@@ -23,6 +24,7 @@ abstract class ITimerViewModel {
 
 abstract class TimerViewDelegate {
   void updateUI();
+  void saveTimerData();
 }
 
 class TimerViewModel implements ITimerViewModel {
@@ -83,6 +85,7 @@ class TimerViewModel implements ITimerViewModel {
   @override
   void playTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), _timerCallback);
+    delegate?.saveTimerData();
   }
 
   @override
@@ -90,6 +93,7 @@ class TimerViewModel implements ITimerViewModel {
     int timerTick = _timer?.tick ?? 0;
     timerModel.timeInSec -= timerTick;
     _timer?.cancel();
+    delegate?.saveTimerData();
   }
 
   TimerModel onDispose() {
@@ -109,6 +113,7 @@ class TimerViewModel implements ITimerViewModel {
     timerModel.timeInSec = 0;
     _currentState = TimerViewState.completed;
     delegate?.updateUI();
+    delegate?.saveTimerData();
   }
 
   void _updateCounterValue(int timerTick) {

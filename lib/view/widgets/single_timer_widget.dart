@@ -128,4 +128,10 @@ class _TimerWidgetState extends State<TimerWidget>
     Provider.of<TimerController>(context, listen: false)
         .removeTimer(viewModel.timerModel.id);
   }
+
+  @override
+  void saveTimerData() {
+    Provider.of<TimerController>(context, listen: false)
+        .updateTimer(viewModel.timerModel);
+  }
 }

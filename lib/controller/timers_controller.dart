@@ -34,10 +34,14 @@ class TimerController extends ChangeNotifier {
     database.deleteData(id);
   }
 
+  void updateTimer(TimerModel timerModel) {
+    database.updateData(timerModel.toMap(true));
+  }
+
   void saveCurrentTimerState() {
-      for (var i in activeTimers) {
-        var currentState = i.onDispose();
-        database.updateData(currentState.toMap(true));
-      }
+    for (var i in activeTimers) {
+      var currentState = i.onDispose();
+      database.updateData(currentState.toMap(true));
+    }
   }
 }
