@@ -6,6 +6,8 @@ abstract class IAudioPlayer {
 }
 
 class AppAudioPlayer implements IAudioPlayer {
+  bool _isPlaying = false;
+
   static final AppAudioPlayer _internal = AppAudioPlayer._();
 
   AppAudioPlayer._();
@@ -16,12 +18,18 @@ class AppAudioPlayer implements IAudioPlayer {
 
   @override
   void play() {
-    _audioPlayer.stop();
-    _audioPlayer.play(AssetSource("audio/iphone_alarm.mp3"));
+    if (_isPlaying) {
+      _audioPlayer.stop();
+    }
+    _isPlaying = true;
+    _audioPlayer.play(AssetSource("audio/iphone_alarm.mp3")).then((value) {
+      _isPlaying = false;
+    });
   }
 
   @override
   void stop() {
+    _isPlaying = false;
     _audioPlayer.stop();
   }
 }
