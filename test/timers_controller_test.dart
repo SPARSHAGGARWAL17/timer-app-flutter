@@ -66,6 +66,25 @@ void main() {
     expect(database.invokedUpdateData, true);
     expect(database.invokedUpdateDataCount, 1);
   });
+  test("Test: Timer moves on top after completion", () async {
+    var model = TimerModel(
+      title: "First",
+      description: "First description",
+      timeInSec: 120,
+    );
+    var model2 = TimerModel(
+      title: "Second",
+      description: "Second description",
+      timeInSec: 120,
+    );
+    database.stubbedInsertData = 1;
+    await timerController.addTimer(model);
+    database.stubbedInsertData = 2;
+    await timerController.addTimer(model2);
+    expect(timerController.activeTimers.length, 2);
+    timerController.moveTimerToTop(2);
+    expect(timerController.activeTimers.first.timerModel.id, 2);
+  });
 
   test("Test: dispose()", () async {
     var model = TimerModel(
