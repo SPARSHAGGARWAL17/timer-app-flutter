@@ -140,4 +140,9 @@ class _TimerWidgetState extends State<TimerWidget>
   void saveTimerData() {
     context.read<TimerController>().saveTimerData(viewModel.timerModel);
   }
+  
+  @override
+  void taskCompleted() {
+    context.read<TimerController>().moveTimerToTop(viewModel.timerModel.id);
+  }
 }

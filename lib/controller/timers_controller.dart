@@ -38,6 +38,13 @@ class TimerController extends ChangeNotifier {
     database.updateData(timerModel.toMap(true));
   }
 
+  void moveTimerToTop(int id) {
+    var index = activeTimers.indexWhere((element) => element.timerModel.id == id);
+    var item = activeTimers.removeAt(index);
+    activeTimers.insert(0, item);
+    notifyListeners();
+  }
+
   void saveCurrentTimerState() {
     for (var i in activeTimers) {
       var currentState = i.onDispose();

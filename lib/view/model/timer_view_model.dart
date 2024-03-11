@@ -28,6 +28,7 @@ abstract class ITimerViewModel {
 abstract class TimerViewDelegate {
   void updateUI();
   void saveTimerData();
+  void taskCompleted();
 }
 
 class TimerViewModel implements ITimerViewModel {
@@ -121,6 +122,7 @@ class TimerViewModel implements ITimerViewModel {
     _currentState = TimerViewState.completed;
     delegate?.updateUI();
     delegate?.saveTimerData();
+    delegate?.taskCompleted();
   }
 
   void _updateCounterValue(int timerTick) {
