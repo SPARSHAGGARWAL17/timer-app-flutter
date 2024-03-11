@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
         buttonTheme: const ButtonThemeData(
           buttonColor: AppColors.buttonBackgroundColor,
         ),
+        fontFamily: "Roboto",
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.primaryColor,
           centerTitle: false,

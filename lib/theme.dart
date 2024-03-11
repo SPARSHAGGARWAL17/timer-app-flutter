@@ -9,19 +9,22 @@ class AppColors {
 
 class AppTextStyles {
   static const TextStyle titleStyle = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontFamily: "Roboto",
+    fontWeight: FontWeight.w500,
     fontSize: 22,
     color: AppColors.primaryColor,
   );
 
   static const TextStyle headingStyle = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontFamily: "Roboto",
+    fontWeight: FontWeight.w500,
     fontSize: 32,
     color: AppColors.secondaryColor,
   );
 
   static const TextStyle bodyTextStyle = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontFamily: "Roboto",
+    fontWeight: FontWeight.w300,
     fontSize: 14,
     color: AppColors.secondaryColor,
   );
